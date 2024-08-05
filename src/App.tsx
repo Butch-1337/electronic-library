@@ -1,26 +1,25 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import AuthorListPage from './pages/AuthorListPage';
+import AddEditAuthorPage from './pages/AddEditAuthorPage';
+import BookListPage from './pages/BookListPage';
+import AddEditBookPage from './pages/AddEditBookPage';
+import HomePage from './pages/HomePage';
 
-function App() {
+const App: React.FC = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Switch>
+        <Route path="/authors/add" component={AddEditAuthorPage} />
+        <Route path="/authors/:id/edit" component={AddEditAuthorPage} />
+        <Route path="/authors" component={AuthorListPage} />
+        <Route path="/books/add" component={AddEditBookPage} />
+        <Route path="/books/:id/edit" component={AddEditBookPage} />
+        <Route path="/books" component={BookListPage} />
+        <Route path="/" exact component={HomePage} />
+      </Switch>
+    </Router>
   );
-}
+};
 
 export default App;
