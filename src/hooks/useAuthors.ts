@@ -1,28 +1,49 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
-interface Author {
+export interface Author {
   id: string;
   fullName: string;
 }
 
 const useAuthors = () => {
-  const [authors, setAuthors] = useState<Author[]>([]);
+  const [authors, setAuthors] = useState<Author[]>(() => {
+    const savedAuthors = sessionStorage.getItem('authors');
+    return savedAuthors ? JSON.parse(savedAuthors) : [];
+  });
 
-  const addAuthor = (author: Author) => setAuthors([...authors, author]);
+  const saveToSessionStorage = (authors: Author[]) => {
+    sessionStorage.setItem('authors', JSON.stringify(authors));
+  };
+
+  const addAuthor = (author: Author) => {
+    const updatedAuthors = [...authors, author];
+    setAuthors(updatedAuthors);
+    saveToSessionStorage(updatedAuthors);
+  };
 
   const updateAuthor = (updatedAuthor: Author) => {
-    setAuthors(authors.map(author => author.id === updatedAuthor.id ? updatedAuthor : author));
+    const updatedAuthors = authors.map(author =>
+      author.id === updatedAuthor.id ? updatedAuthor : author
+    );
+    setAuthors(updatedAuthors);
+    saveToSessionStorage(updatedAuthors);
   };
 
   const deleteAuthor = (id: string) => {
-    setAuthors(authors.filter(author => author.id !== id));
+    const updatedAuthors = authors.filter(author => author.id !== id);
+    setAuthors(updatedAuthors);
+    saveToSessionStorage(updatedAuthors);
   };
+
+  useEffect(() => {
+    saveToSessionStorage(authors);
+  }, [authors]);
 
   return {
     authors,
     addAuthor,
     updateAuthor,
-    deleteAuthor
+    deleteAuthor,
   };
 };
 

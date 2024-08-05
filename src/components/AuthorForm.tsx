@@ -23,7 +23,7 @@ const AuthorForm: React.FC<AuthorFormProps> = ({ onSubmit, defaultValues }) => {
       <div>
         <label>Full Name</label>
         <input {...register("fullName")} />
-        <p>{errors.fullName?.message  as any}</p>
+        <p>{errors.fullName?.message as string}</p>
       </div>
       <button type="submit">Save</button>
     </form>

@@ -1,23 +1,28 @@
 import React from 'react';
-import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
+import { useForm, Controller } from 'react-hook-form';
 import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { Author } from '../hooks/useAuthors';
 
 interface BookFormProps {
   onSubmit: (data: any) => void;
   defaultValues?: any;
-  authors: { id: string, fullName: string }[];
+  authors: Author[];
 }
 
 const schema = yup.object().shape({
-  title: yup.string().required("Title is required"),
-  publicationYear: yup.number().required("Publication Year is required"),
-  authorIds: yup.array().of(yup.number()).min(1, "At least one author is required"),
+  title: yup.string().required('Title is required'),
+  publicationYear: yup.string().required('Publication Year is required'),
+  authorIds: yup.array().of(yup.string().required()).required('At least one author is required'),
 });
 
 const BookForm: React.FC<BookFormProps> = ({ onSubmit, defaultValues, authors }) => {
-  const { register, handleSubmit, formState: { errors } } = useForm({
-    defaultValues,
+  const { control, handleSubmit, formState: { errors } } = useForm({
+    defaultValues: {
+      title: defaultValues?.title || '',
+      publicationYear: defaultValues?.publicationYear || '',
+      authorIds: defaultValues?.authorIds || [],
+    },
     resolver: yupResolver(schema),
   });
 
@@ -25,23 +30,56 @@ const BookForm: React.FC<BookFormProps> = ({ onSubmit, defaultValues, authors })
     <form onSubmit={handleSubmit(onSubmit)}>
       <div>
         <label>Title</label>
-        <input {...register("title")} />
-        <p>{errors.title?.message as any}</p>
+        <Controller
+          name="title"
+          control={control}
+          render={({ field }) => <input {...field} />}
+        />
+        {errors.title && <p>{errors.title?.message as string}</p>}
       </div>
+
       <div>
         <label>Publication Year</label>
-        <input type="number" {...register("publicationYear")} />
-        <p>{errors.publicationYear?.message as any}</p>
+        <Controller
+          name="publicationYear"
+          control={control}
+          render={({ field }) => <input {...field} />}
+        />
+        {errors.publicationYear && <p>{errors.publicationYear?.message as string}</p>}
       </div>
+
       <div>
         <label>Authors</label>
-        <select multiple {...register("authorIds")}>
-          {authors.map(author => (
-            <option key={author.id} value={author.id}>{author.fullName}</option>
-          ))}
-        </select>
-        <p>{errors.authorIds?.message as any}</p>
+        <Controller
+          name="authorIds"
+          control={control}
+          render={({ field }) => (
+            <select
+              multiple
+              {...field}
+              value={field.value || []}
+              onChange={(e) => {
+                const options = e.target.options;
+                const value: string[] = [];
+                for (let i = 0; i < options.length; i++) {
+                  if (options[i].selected) {
+                    value.push(options[i].value);
+                  }
+                }
+                field.onChange(value);
+              }}
+            >
+              {authors.map(author => (
+                <option key={author.id} value={author.id}>
+                  {author.fullName}
+                </option>
+              ))}
+            </select>
+          )}
+        />
+        {errors.authorIds && <p>{errors.authorIds?.message as string}</p>}
       </div>
+
       <button type="submit">Save</button>
     </form>
   );

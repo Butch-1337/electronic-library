@@ -1,30 +1,51 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 interface Book {
   id: string;
   title: string;
-  publicationYear: number;
   authorIds: string[];
+  publicationYear: string;
 }
 
 const useBooks = () => {
-  const [books, setBooks] = useState<Book[]>([]);
+  const [books, setBooks] = useState<Book[]>(() => {
+    const savedBooks = sessionStorage.getItem('books');
+    return savedBooks ? JSON.parse(savedBooks) : [];
+  });
 
-  const addBook = (book: Book) => setBooks([...books, book]);
+  const saveToSessionStorage = (books: Book[]) => {
+    sessionStorage.setItem('books', JSON.stringify(books));
+  };
+
+  const addBook = (book: Book) => {
+    const updatedBooks = [...books, book];
+    setBooks(updatedBooks);
+    saveToSessionStorage(updatedBooks);
+  };
 
   const updateBook = (updatedBook: Book) => {
-    setBooks(books.map(book => book.id === updatedBook.id ? updatedBook : book));
+    const updatedBooks = books.map(book =>
+      book.id === updatedBook.id ? updatedBook : book
+    );
+    setBooks(updatedBooks);
+    saveToSessionStorage(updatedBooks);
   };
 
   const deleteBook = (id: string) => {
-    setBooks(books.filter(book => book.id !== id));
+    const updatedBooks = books.filter(book => book.id !== id);
+    setBooks(updatedBooks);
+    saveToSessionStorage(updatedBooks);
   };
+
+  useEffect(() => {
+    saveToSessionStorage(books);
+  }, [books]);
 
   return {
     books,
     addBook,
     updateBook,
-    deleteBook
+    deleteBook,
   };
 };
 
