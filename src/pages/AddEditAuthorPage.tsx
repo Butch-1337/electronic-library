@@ -4,6 +4,7 @@ import useAuthors from '../hooks/useAuthors';
 import AuthorForm from '../components/AuthorForm';
 import BackButton from '../components/BackButton';
 import { v4 as uuidv4 } from 'uuid';
+import Breadcrumbs from '../components/Breadcrumbs'
 
 const AddEditAuthorPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -22,6 +23,7 @@ const AddEditAuthorPage: React.FC = () => {
 
   return (
     <div>
+      <Breadcrumbs />
       <BackButton />
       <h1>{author ? "Edit Author" : "Add Author"}</h1>
       <AuthorForm onSubmit={handleSubmit} defaultValues={author} />

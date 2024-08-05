@@ -5,6 +5,7 @@ import useAuthors from '../hooks/useAuthors';
 import BookForm from '../components/BookForm';
 import BackButton from '../components/BackButton';
 import { v4 as uuidv4 } from 'uuid';
+import Breadcrumbs from '../components/Breadcrumbs'
 
 const AddEditBookPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -24,6 +25,7 @@ const AddEditBookPage: React.FC = () => {
 
   return (
     <div>
+      <Breadcrumbs />
       <BackButton />
       <h1>{book ? "Edit Book" : "Add Book"}</h1>
       <BookForm onSubmit={handleSubmit} defaultValues={book} authors={authors} />

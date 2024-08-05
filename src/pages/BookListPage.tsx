@@ -4,6 +4,7 @@ import useBooks from '../hooks/useBooks';
 import useAuthors from '../hooks/useAuthors';
 import BackButton from '../components/BackButton';
 import ConfirmationModal from '../components/ConfirmationModal';
+import Breadcrumbs from '../components/Breadcrumbs'
 
 const BookListPage: React.FC = () => {
   const { books, deleteBook } = useBooks();
@@ -46,6 +47,7 @@ const BookListPage: React.FC = () => {
 
   return (
     <div>
+      <Breadcrumbs />
       <BackButton />
       <h1>Book List</h1>
       <Link to="books/add">Add Book</Link>

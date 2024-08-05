@@ -4,6 +4,7 @@ import useAuthors from '../hooks/useAuthors';
 import useBooks from '../hooks/useBooks';
 import BackButton from '../components/BackButton';
 import ConfirmationModal from '../components/ConfirmationModal';
+import Breadcrumbs from '../components/Breadcrumbs'
 
 const AuthorListPage: React.FC = () => {
   const { authors, deleteAuthor } = useAuthors();
@@ -37,6 +38,7 @@ const AuthorListPage: React.FC = () => {
 
   return (
     <div>
+      <Breadcrumbs />
       <BackButton />
       <h1>Author List</h1>
       <Link to="authors/add">Add Author</Link>
