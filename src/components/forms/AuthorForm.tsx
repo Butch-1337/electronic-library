@@ -2,8 +2,8 @@ import React from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import {TextField, Button, FormControl, Box} from '@mui/material';
-import CancelButton from '../CancelButton'
+import { TextField, Button, FormControl, Box } from '@mui/material';
+import CancelButton from '../CancelButton';
 
 interface AuthorFormProps {
   onSubmit: (data: any) => void;
@@ -24,9 +24,9 @@ const AuthorForm: React.FC<AuthorFormProps> = ({ onSubmit, defaultValues }) => {
       fullName: defaultValues?.fullName || '',
     },
     resolver: yupResolver(schema),
-    mode: 'onBlur', // Trigger validation on blur
-    shouldFocusError: true, // Focus on first error field
-    reValidateMode: 'onChange', // Revalidate on change
+    mode: 'onBlur',
+    shouldFocusError: true,
+    reValidateMode: 'onChange',
   });
 
   return (
@@ -46,14 +46,13 @@ const AuthorForm: React.FC<AuthorFormProps> = ({ onSubmit, defaultValues }) => {
         />
       </FormControl>
 
-
-      <Box sx={{marginTop: '16px'}}>
+      <Box sx={{ marginTop: '16px' }}>
         <Button
           variant="contained"
           color="primary"
           type="submit"
           disabled={!isDirty || !isValid}
-          sx={{marginRight: '16px'}}
+          sx={{ marginRight: '16px' }}
         >
           Save
         </Button>
