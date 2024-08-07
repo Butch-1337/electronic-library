@@ -1,21 +1,38 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import {Typography} from '@mui/material'
+import { Container, Typography, Button, Box } from '@mui/material';
 
 const HomePage: React.FC = () => {
   return (
-    <div>
+    <Container>
       <Typography variant="h4" gutterBottom>
         Welcome to the Electronic Library
       </Typography>
 
-      <div>
-        <Link to="/Books">View Books</Link>
-      </div>
-      <div>
-        <Link to="/Authors">View Authors</Link>
-      </div>
-    </div>
+      <Typography variant="body1" gutterBottom>
+        Discover a world of books and authors. Explore our collection, find your next read,
+        and learn more about your favorite writers.
+      </Typography>
+
+      <Box marginTop={2}>
+        <Button
+          variant="contained"
+          color="primary"
+          component={Link}
+          to="/Books"
+        >
+          View Books
+        </Button>
+        <Button
+          variant="contained"
+          color="secondary"
+          component={Link}
+          to="/Authors"
+        >
+          View Authors
+        </Button>
+      </Box>
+    </Container>
   );
 };
 

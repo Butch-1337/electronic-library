@@ -10,12 +10,17 @@ const App: React.FC = () => {
   return (
     <Router>
       <Switch>
-        <Route path="/Authors/add" component={AddEditAuthorPage} />
-        <Route path="/Authors/:id/edit" component={AddEditAuthorPage} />
-        <Route path="/Authors" component={AuthorListPage} />
-        <Route path="/Books/add" component={AddEditBookPage} />
-        <Route path="/Books/:id/edit" component={AddEditBookPage} />
-        <Route path="/Books" component={BookListPage} />
+        {/* Author Routes */}
+        <Route path="/Authors/Add" exact component={AddEditAuthorPage} />
+        <Route path="/Authors/Edit/:id" exact component={AddEditAuthorPage} />
+        <Route path="/Authors" exact component={AuthorListPage} />
+
+        {/* Book Routes */}
+        <Route path="/Books/Add" exact component={AddEditBookPage} />
+        <Route path="/Books/Edit/:id" exact component={AddEditBookPage} />
+        <Route path="/Books" exact component={BookListPage} />
+
+        {/* Home Page */}
         <Route path="/" exact component={HomePage} />
       </Switch>
     </Router>

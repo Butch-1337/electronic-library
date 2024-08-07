@@ -11,8 +11,14 @@ const Breadcrumbs: React.FC = () => {
       <Link component={RouterLink} color="inherit" to="/">
         Home
       </Link>
-      {pathnames.map((value, index) => {
-        const last = index === pathnames.length - 1;
+      {pathnames.map((value, index, array) => {
+
+        //Do not show id after edit
+        if (array[index - 1] === 'Edit') {
+          return null;
+        }
+
+        const last = index === pathnames.length - 1 || value === 'Edit';
         const to = `/${pathnames.slice(0, index + 1).join('/')}`;
 
         return last ? (

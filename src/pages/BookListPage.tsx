@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import useBooks from '../hooks/useBooks';
 import useAuthors from '../hooks/useAuthors';
-import BackButton from '../components/BackButton';
 import ConfirmationModal from '../components/ConfirmationModal';
 import { Button, Table, TableBody, TableCell, TableHead, TableRow, Select, MenuItem, FormControl, InputLabel, Container, Typography } from '@mui/material';
 import Breadcrumbs from '../components/Breadcrumbs';
@@ -49,15 +48,13 @@ const BookListPage: React.FC = () => {
   return (
     <Container>
       <Breadcrumbs />
-      <BackButton />
       <Typography variant="h4" gutterBottom>Book List</Typography>
 
       <Button
         variant="contained"
         color="primary"
         component={Link}
-        to="Books/add"
-        style={{ marginBottom: '1rem' }}
+        to="Books/Add"
       >
         Add Book
       </Button>
@@ -113,14 +110,13 @@ const BookListPage: React.FC = () => {
                   variant="contained"
                   color="primary"
                   component={Link}
-                  to={`/Books/${book.id}/edit`}
-                  style={{ marginRight: '0.5rem' }}
+                  to={`/Books/Edit/${book.id}`}
                 >
                   Edit
                 </Button>
                 <Button
                   variant="contained"
-                  color="secondary"
+                  color="error"
                   onClick={() => openConfirmationModal(book.id)}
                 >
                   Delete

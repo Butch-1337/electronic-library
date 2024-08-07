@@ -4,7 +4,7 @@ interface Book {
   id: string;
   title: string;
   authorIds: string[];
-  publicationYear: string;
+  publicationYear: number;
 }
 
 const useBooks = () => {

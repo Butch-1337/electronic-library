@@ -48,7 +48,7 @@ const AuthorListPage: React.FC = () => {
           variant="contained"
           color="primary"
           component={Link}
-          to="Authors/add"
+          to="Authors/Add"
         >
           Add Author
         </Button>
@@ -70,8 +70,21 @@ const AuthorListPage: React.FC = () => {
               <TableCell>{author.fullName}</TableCell>
               <TableCell>{getNumberOfBooks(author.id)}</TableCell>
               <TableCell>
-                <Button variant="contained" color="primary" component={Link} to={`/Authors/${author.id}/edit`}>Edit</Button>
-                <Button variant="contained" color="error" onClick={() => openConfirmationModal(author.id)}>Delete</Button>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  component={Link}
+                  to={`/Authors/Edit/${author.id}`}
+                >
+                  Edit
+                </Button>
+                <Button
+                  variant="contained"
+                  color="error"
+                  onClick={() => openConfirmationModal(author.id)}
+                >
+                  Delete
+                </Button>
               </TableCell>
             </TableRow>
           ))}

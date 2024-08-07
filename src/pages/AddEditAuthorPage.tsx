@@ -2,7 +2,6 @@ import React from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import useAuthors from '../hooks/useAuthors';
 import AuthorForm from '../components/AuthorForm';
-import BackButton from '../components/BackButton';
 import { v4 as uuidv4 } from 'uuid';
 import Breadcrumbs from '../components/Breadcrumbs'
 import {Typography} from '@mui/material'
