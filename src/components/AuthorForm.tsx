@@ -22,7 +22,7 @@ const AuthorForm: React.FC<AuthorFormProps> = ({ onSubmit, defaultValues }) => {
   const {
     control,
     handleSubmit,
-    formState: { errors, touchedFields, isSubmitted, isValid }
+    formState: { errors, touchedFields, isValid, isDirty }
   } = useForm({
     defaultValues: {
       fullName: defaultValues?.fullName || '',
@@ -32,8 +32,6 @@ const AuthorForm: React.FC<AuthorFormProps> = ({ onSubmit, defaultValues }) => {
     shouldFocusError: true, // Focus on first error field
     reValidateMode: 'onChange', // Revalidate on change
   });
-
-  const isTouched = (fieldName: keyof FormData) => touchedFields[fieldName] || isSubmitted;
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -45,7 +43,7 @@ const AuthorForm: React.FC<AuthorFormProps> = ({ onSubmit, defaultValues }) => {
             <TextField
               {...field}
               label="Full Name"
-              error={!!(errors.fullName && isTouched('fullName'))}
+              error={!!(errors.fullName && touchedFields.fullName)}
               helperText={errors.fullName?.message as string}
             />
           )}
@@ -56,7 +54,7 @@ const AuthorForm: React.FC<AuthorFormProps> = ({ onSubmit, defaultValues }) => {
         variant="contained"
         color="primary"
         type="submit"
-        disabled={!isValid}
+        disabled={!isDirty || !isValid} // Disable button if form is not dirty or valid
       >
         Save
       </Button>

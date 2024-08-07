@@ -1,5 +1,5 @@
-import React from 'react';
-import { useForm, Controller, SubmitHandler } from 'react-hook-form';
+import React, { useEffect, useState } from 'react';
+import { useForm, Controller, SubmitHandler, FormState } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
@@ -45,7 +45,8 @@ const BookForm: React.FC<BookFormProps> = ({ onSubmit, defaultValues, authors })
   const {
     control,
     handleSubmit,
-    formState: { errors, touchedFields, isSubmitted, isValid },
+    formState: { errors, touchedFields, isValid, isDirty },
+    getValues,
   } = useForm<FormData>({
     defaultValues: defaultValues || {
       title: '',
@@ -53,18 +54,33 @@ const BookForm: React.FC<BookFormProps> = ({ onSubmit, defaultValues, authors })
       authorIds: [],
     },
     resolver: yupResolver(schema) as any,
-    mode: 'onBlur', // Trigger validation on blur
-    shouldFocusError: true, // Focus on first error field
-    reValidateMode: 'onChange', // Revalidate on change
+    mode: 'onBlur',
+    shouldFocusError: true,
+    reValidateMode: 'onChange',
   });
+
+  // State to manage the form's initial values
+  const [initialValues, setInitialValues] = useState<FormData>(defaultValues || {
+    title: '',
+    publicationYear: null,
+    authorIds: [],
+  });
+
+  useEffect(() => {
+    if (defaultValues) {
+      setInitialValues(defaultValues);
+    }
+  }, [defaultValues]);
+
+  // Function to check if form values have changed
+  const isFormChanged = () => {
+    const currentValues = getValues();
+    return JSON.stringify(currentValues) !== JSON.stringify(initialValues);
+  };
 
   const handleFormSubmit: SubmitHandler<FormData> = (data) => {
     onSubmit(data);
   };
-
-  const isTouched = (fieldName: keyof FormData) => touchedFields[fieldName] || isSubmitted;
-
-  console.log('===', )
 
   return (
     <form onSubmit={handleSubmit(handleFormSubmit)}>
@@ -77,7 +93,7 @@ const BookForm: React.FC<BookFormProps> = ({ onSubmit, defaultValues, authors })
               <TextField
                 {...field}
                 label="Title"
-                error={!!(errors.title && isTouched('title'))}
+                error={!!(errors.title && touchedFields.title)}
                 helperText={errors.title?.message as string}
               />
             )}
@@ -95,7 +111,7 @@ const BookForm: React.FC<BookFormProps> = ({ onSubmit, defaultValues, authors })
                 {...field}
                 type="number"
                 label="Publication Year"
-                error={!!(errors.publicationYear && isTouched('publicationYear'))}
+                error={!!(errors.publicationYear && touchedFields.publicationYear)}
                 helperText={errors.publicationYear?.message as string}
                 InputProps={{
                   inputProps: {
@@ -125,7 +141,7 @@ const BookForm: React.FC<BookFormProps> = ({ onSubmit, defaultValues, authors })
                   <TextField
                     {...params}
                     label="Authors"
-                    error={!!(errors.authorIds && isTouched('authorIds'))}
+                    error={!!(errors.authorIds && touchedFields.authorIds)}
                     helperText={errors.authorIds?.message as string}
                     InputProps={{
                       ...params.InputProps,
@@ -154,7 +170,7 @@ const BookForm: React.FC<BookFormProps> = ({ onSubmit, defaultValues, authors })
         variant="contained"
         color="primary"
         type="submit"
-        disabled={!isValid} // Disable button if form is not valid
+        disabled={!isDirty || !isValid} // Disable button if form is not dirty or valid
       >
         Save
       </Button>
