@@ -3,7 +3,15 @@ import { Link } from 'react-router-dom';
 import useBooks from '../hooks/useBooks';
 import useAuthors from '../hooks/useAuthors';
 import ConfirmationModal from '../components/ConfirmationModal';
-import { Button, FormControl, InputLabel, Select, MenuItem, SelectChangeEvent } from '@mui/material';
+import {
+  Button,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  SelectChangeEvent,
+  Box
+} from '@mui/material';
 import Page from '../components/Page';
 import Table from '../components/Table';
 
@@ -12,6 +20,7 @@ const BookListPage: React.FC = () => {
   const { authors } = useAuthors();
 
   const [filterAuthorId, setFilterAuthorId] = useState<string | null>(null);
+  const [tempFilterAuthorId, setTempFilterAuthorId] = useState<string | null>(null);
   const [filteredBooks, setFilteredBooks] = useState(books);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [bookToDelete, setBookToDelete] = useState<string | null>(null);
@@ -25,7 +34,11 @@ const BookListPage: React.FC = () => {
   }, [books, filterAuthorId]);
 
   const handleFilterChange = (event: SelectChangeEvent) => {
-    setFilterAuthorId(event.target.value);
+    setTempFilterAuthorId(event.target.value);
+  };
+
+  const applyFilter = () => {
+    setFilterAuthorId(tempFilterAuthorId);
   };
 
   const openConfirmationModal = (id: string) => {
@@ -60,12 +73,13 @@ const BookListPage: React.FC = () => {
   ];
 
   const actions = (row: any) => (
-    <>
+    <Box sx={{display: 'flex'}}>
       <Button
         variant="contained"
         color="primary"
         component={Link}
         to={`/Books/Edit/${row.id}`}
+        sx={{marginRight: '16px'}}
       >
         Edit
       </Button>
@@ -76,7 +90,7 @@ const BookListPage: React.FC = () => {
       >
         Delete
       </Button>
-    </>
+    </Box>
   );
 
   return (
@@ -86,26 +100,42 @@ const BookListPage: React.FC = () => {
         color="primary"
         component={Link}
         to="Books/Add"
-        style={{ marginBottom: '1rem' }}
+        sx={{ marginBottom: '16px' }}
       >
         Add Book
       </Button>
 
-      <FormControl variant="outlined" fullWidth style={{ marginBottom: '1rem' }}>
-        <InputLabel>Filter by Author</InputLabel>
-        <Select
-          value={filterAuthorId || ''}
-          onChange={handleFilterChange}
-          label="Filter by Author"
+      <Box sx={{display: 'flex'}}>
+        <FormControl
+          variant="outlined"
+          sx={{
+            minWidth: '200px',
+            marginRight: '16px'
+          }}
         >
-          <MenuItem value=""><em>All</em></MenuItem>
-          {authors.map(author => (
-            <MenuItem key={author.id} value={author.id}>
-              {author.fullName}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
+          <InputLabel>Filter by Author</InputLabel>
+          <Select
+            value={tempFilterAuthorId || ''}
+            onChange={handleFilterChange}
+            label="Filter by Author"
+          >
+            <MenuItem value=""><em>All</em></MenuItem>
+            {authors.map(author => (
+              <MenuItem key={author.id} value={author.id}>
+                {author.fullName}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={applyFilter}
+          sx={{ marginBottom: '16px' }}
+        >
+          Apply
+        </Button>
+      </Box>
 
       <Table columns={columns} data={filteredBooks} actions={actions} />
 

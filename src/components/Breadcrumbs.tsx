@@ -7,7 +7,7 @@ const Breadcrumbs: React.FC = () => {
   const pathnames = location.pathname.split('/').filter(x => x);
 
   return (
-    <MUIBreadcrumbs aria-label="breadcrumb">
+    <MUIBreadcrumbs aria-label="breadcrumb" sx={{marginBottom: '16px'}}>
       <Link component={RouterLink} color="inherit" to="/">
         Home
       </Link>

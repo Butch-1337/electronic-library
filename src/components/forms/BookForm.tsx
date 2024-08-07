@@ -9,7 +9,7 @@ import {
   FormHelperText,
   Autocomplete,
   CircularProgress,
-  InputAdornment,
+  InputAdornment, Box,
 } from '@mui/material';
 import { Author } from '../../hooks/useAuthors';
 import CancelButton from '../CancelButton'
@@ -147,15 +147,18 @@ const BookForm: React.FC<BookFormProps> = ({ onSubmit, defaultValues, authors })
         </FormControl>
       </div>
 
-      <Button
-        variant="contained"
-        color="primary"
-        type="submit"
-        disabled={!isDirty || !isValid} // Disable button if form is not dirty or valid
-      >
-        Save
-      </Button>
-      <CancelButton />
+      <Box sx={{marginTop: '16px'}}>
+        <Button
+          variant="contained"
+          color="primary"
+          type="submit"
+          disabled={!isDirty || !isValid}
+          sx={{marginRight: '16px'}}
+        >
+          Save
+        </Button>
+        <CancelButton />
+      </Box>
 
     </form>
   );

@@ -14,12 +14,13 @@ const HomePage: React.FC = () => {
         and learn more about your favorite writers.
       </Typography>
 
-      <Box marginTop={2}>
+      <Box marginTop={'16px'}>
         <Button
           variant="contained"
           color="primary"
           component={Link}
           to="/Books"
+          sx={{marginRight: '16px'}}
         >
           View Books
         </Button>

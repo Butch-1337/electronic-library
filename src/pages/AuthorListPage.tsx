@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import useAuthors from '../hooks/useAuthors';
 import useBooks from '../hooks/useBooks';
-import { Button } from '@mui/material';
+import {Box, Button} from '@mui/material';
 import ConfirmationModal from '../components/ConfirmationModal';
 import Page from '../components/Page';
 import Table from '../components/Table';
@@ -47,12 +47,13 @@ const AuthorListPage: React.FC = () => {
   ];
 
   const actions = (row: any) => (
-    <>
+    <Box sx={{display: 'flex'}}>
       <Button
         variant="contained"
         color="primary"
         component={Link}
         to={`/Authors/Edit/${row.id}`}
+        sx={{marginRight: '16px'}}
       >
         Edit
       </Button>
@@ -63,7 +64,7 @@ const AuthorListPage: React.FC = () => {
       >
         Delete
       </Button>
-    </>
+    </Box>
   );
 
   return (
@@ -73,7 +74,7 @@ const AuthorListPage: React.FC = () => {
         color="primary"
         component={Link}
         to="Authors/Add"
-        style={{ marginBottom: '1rem' }}
+        sx={{ marginBottom: '16px' }}
       >
         Add Author
       </Button>
