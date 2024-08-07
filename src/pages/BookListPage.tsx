@@ -3,7 +3,21 @@ import { Link } from 'react-router-dom';
 import useBooks from '../hooks/useBooks';
 import useAuthors from '../hooks/useAuthors';
 import ConfirmationModal from '../components/ConfirmationModal';
-import { Button, Table, TableBody, TableCell, TableHead, TableRow, Select, MenuItem, FormControl, InputLabel, Container, Typography } from '@mui/material';
+import {
+  Button,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
+  Container,
+  Typography,
+  SelectChangeEvent
+} from '@mui/material';
 import Breadcrumbs from '../components/Breadcrumbs';
 
 const BookListPage: React.FC = () => {
@@ -23,8 +37,8 @@ const BookListPage: React.FC = () => {
     }
   }, [books, filterAuthorId]);
 
-  const handleFilterChange = (event: any) => {
-    setFilterAuthorId(event.target.value as string);
+  const handleFilterChange = (event: SelectChangeEvent) => {
+    setFilterAuthorId(event.target.value);
   };
 
   const openConfirmationModal = (id: string) => {

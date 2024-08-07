@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { useForm, Controller, SubmitHandler, FormState } from 'react-hook-form';
+import React from 'react';
+import {useForm, Controller, SubmitHandler, Resolver} from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
@@ -12,6 +12,7 @@ import {
   InputAdornment,
 } from '@mui/material';
 import { Author } from '../hooks/useAuthors';
+import CancelButton from './CancelButton'
 
 // Define the shape of form data
 interface FormData {
@@ -46,37 +47,17 @@ const BookForm: React.FC<BookFormProps> = ({ onSubmit, defaultValues, authors })
     control,
     handleSubmit,
     formState: { errors, touchedFields, isValid, isDirty },
-    getValues,
   } = useForm<FormData>({
     defaultValues: defaultValues || {
       title: '',
       publicationYear: null,
       authorIds: [],
     },
-    resolver: yupResolver(schema) as any,
+    resolver: yupResolver(schema) as Resolver<FormData>,
     mode: 'onBlur',
     shouldFocusError: true,
     reValidateMode: 'onChange',
   });
-
-  // State to manage the form's initial values
-  const [initialValues, setInitialValues] = useState<FormData>(defaultValues || {
-    title: '',
-    publicationYear: null,
-    authorIds: [],
-  });
-
-  useEffect(() => {
-    if (defaultValues) {
-      setInitialValues(defaultValues);
-    }
-  }, [defaultValues]);
-
-  // Function to check if form values have changed
-  const isFormChanged = () => {
-    const currentValues = getValues();
-    return JSON.stringify(currentValues) !== JSON.stringify(initialValues);
-  };
 
   const handleFormSubmit: SubmitHandler<FormData> = (data) => {
     onSubmit(data);
@@ -174,6 +155,8 @@ const BookForm: React.FC<BookFormProps> = ({ onSubmit, defaultValues, authors })
       >
         Save
       </Button>
+      <CancelButton />
+
     </form>
   );
 };

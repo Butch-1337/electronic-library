@@ -10,10 +10,6 @@ interface AuthorFormProps {
   defaultValues?: any;
 }
 
-interface FormData {
-  fullName: string
-}
-
 const schema = yup.object().shape({
   fullName: yup.string().required("Full Name is required"),
 });
