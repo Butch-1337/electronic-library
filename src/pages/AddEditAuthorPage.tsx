@@ -1,10 +1,9 @@
 import React from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import useAuthors from '../hooks/useAuthors';
-import AuthorForm from '../components/AuthorForm';
+import AuthorForm from '../components/forms/AuthorForm';
 import { v4 as uuidv4 } from 'uuid';
-import Breadcrumbs from '../components/Breadcrumbs'
-import {Typography} from '@mui/material'
+import Page from '../components/Page';
 
 const AddEditAuthorPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -22,14 +21,9 @@ const AddEditAuthorPage: React.FC = () => {
   };
 
   return (
-    <div>
-      <Breadcrumbs />
-      <Typography variant="h4" gutterBottom>
-        {author ? "Edit Author" : "Add Author"}
-      </Typography>
-
+    <Page title={author ? "Edit Author" : "Add Author"}>
       <AuthorForm onSubmit={handleSubmit} defaultValues={author} />
-    </div>
+    </Page>
   );
 };
 

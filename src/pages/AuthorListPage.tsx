@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import useAuthors from '../hooks/useAuthors';
 import useBooks from '../hooks/useBooks';
-import { Button, Typography, Container } from '@mui/material';
+import { Button } from '@mui/material';
 import ConfirmationModal from '../components/ConfirmationModal';
-import Breadcrumbs from '../components/Breadcrumbs';
+import Page from '../components/Page';
 import Table from '../components/Table';
 
 const AuthorListPage: React.FC = () => {
@@ -67,12 +67,7 @@ const AuthorListPage: React.FC = () => {
   );
 
   return (
-    <Container>
-      <Breadcrumbs />
-      <Typography variant="h4" gutterBottom>
-        Author List
-      </Typography>
-
+    <Page title="Author List">
       <Button
         variant="contained"
         color="primary"
@@ -91,7 +86,7 @@ const AuthorListPage: React.FC = () => {
         onConfirm={handleConfirmDelete}
         onCancel={handleCancelDelete}
       />
-    </Container>
+    </Page>
   );
 };
 

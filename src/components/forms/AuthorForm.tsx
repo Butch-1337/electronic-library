@@ -3,7 +3,7 @@ import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { TextField, Button, FormControl } from '@mui/material';
-import CancelButton from './CancelButton'
+import CancelButton from '../CancelButton'
 
 interface AuthorFormProps {
   onSubmit: (data: any) => void;

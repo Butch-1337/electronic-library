@@ -2,10 +2,9 @@ import React from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import useBooks from '../hooks/useBooks';
 import useAuthors from '../hooks/useAuthors';
-import BookForm from '../components/BookForm';
+import BookForm from '../components/forms/BookForm';
 import { v4 as uuidv4 } from 'uuid';
-import Breadcrumbs from '../components/Breadcrumbs'
-import {Typography} from '@mui/material'
+import Page from '../components/Page';
 
 const AddEditBookPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -24,17 +23,13 @@ const AddEditBookPage: React.FC = () => {
   };
 
   return (
-    <div>
-      <Breadcrumbs />
-      <Typography variant="h4" gutterBottom>
-        {book ? "Edit Book" : "Add Book"}
-      </Typography>
+    <Page title={book ? "Edit Book" : "Add Book"}>
       <BookForm
         onSubmit={handleSubmit}
         defaultValues={book}
         authors={authors}
       />
-    </div>
+    </Page>
   );
 };
 

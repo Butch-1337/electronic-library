@@ -3,17 +3,8 @@ import { Link } from 'react-router-dom';
 import useBooks from '../hooks/useBooks';
 import useAuthors from '../hooks/useAuthors';
 import ConfirmationModal from '../components/ConfirmationModal';
-import {
-  Button,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  Container,
-  Typography,
-  SelectChangeEvent
-} from '@mui/material';
-import Breadcrumbs from '../components/Breadcrumbs';
+import { Button, FormControl, InputLabel, Select, MenuItem, SelectChangeEvent } from '@mui/material';
+import Page from '../components/Page';
 import Table from '../components/Table';
 
 const BookListPage: React.FC = () => {
@@ -89,15 +80,13 @@ const BookListPage: React.FC = () => {
   );
 
   return (
-    <Container>
-      <Breadcrumbs />
-      <Typography variant="h4" gutterBottom>Book List</Typography>
-
+    <Page title="Book List">
       <Button
         variant="contained"
         color="primary"
         component={Link}
         to="Books/Add"
+        style={{ marginBottom: '1rem' }}
       >
         Add Book
       </Button>
@@ -126,7 +115,7 @@ const BookListPage: React.FC = () => {
         onConfirm={handleConfirmDelete}
         onCancel={handleCancelDelete}
       />
-    </Container>
+    </Page>
   );
 };
 

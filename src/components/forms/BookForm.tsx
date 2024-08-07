@@ -11,8 +11,8 @@ import {
   CircularProgress,
   InputAdornment,
 } from '@mui/material';
-import { Author } from '../hooks/useAuthors';
-import CancelButton from './CancelButton'
+import { Author } from '../../hooks/useAuthors';
+import CancelButton from '../CancelButton'
 
 // Define the shape of form data
 interface FormData {
