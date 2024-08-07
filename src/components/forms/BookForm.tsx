@@ -138,19 +138,6 @@ const BookForm: React.FC<BookFormProps> = ({ onSubmit, defaultValues, authors })
                     label="Authors"
                     error={!!(errors.authorIds)}
                     helperText={errors.authorIds?.message as string}
-                    InputProps={{
-                      ...params.InputProps,
-                      endAdornment: (
-                        <>
-                          {authors.length === 0 && (
-                            <InputAdornment position="end">
-                              <CircularProgress size={20} />
-                            </InputAdornment>
-                          )}
-                          {params.InputProps.endAdornment}
-                        </>
-                      ),
-                    }}
                   />
                 )}
                 noOptionsText={authors.length === 0 ? 'No authors available' : 'No options'}
@@ -172,7 +159,6 @@ const BookForm: React.FC<BookFormProps> = ({ onSubmit, defaultValues, authors })
         </Button>
         <CancelButton />
       </Box>
-
     </form>
   );
 };
