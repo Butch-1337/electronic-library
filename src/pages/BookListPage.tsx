@@ -5,20 +5,16 @@ import useAuthors from '../hooks/useAuthors';
 import ConfirmationModal from '../components/ConfirmationModal';
 import {
   Button,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-  Select,
-  MenuItem,
   FormControl,
   InputLabel,
+  Select,
+  MenuItem,
   Container,
   Typography,
   SelectChangeEvent
 } from '@mui/material';
 import Breadcrumbs from '../components/Breadcrumbs';
+import Table from '../components/Table';
 
 const BookListPage: React.FC = () => {
   const { books, deleteBook } = useBooks();
@@ -59,6 +55,39 @@ const BookListPage: React.FC = () => {
     setBookToDelete(null);
   };
 
+  const columns = [
+    { id: 'id', label: 'ID', render: (row: any) => row.id },
+    { id: 'title', label: 'Title', render: (row: any) => row.title },
+    {
+      id: 'authors', label: 'Author(s)', render: (row: any) =>
+        row.authorIds.map((id: string) => {
+          const author = authors.find(a => a.id === id);
+          return author ? author.fullName : 'Unknown Author';
+        }).join(', ')
+    },
+    { id: 'publicationYear', label: 'Publication Year', render: (row: any) => row.publicationYear },
+  ];
+
+  const actions = (row: any) => (
+    <>
+      <Button
+        variant="contained"
+        color="primary"
+        component={Link}
+        to={`/Books/Edit/${row.id}`}
+      >
+        Edit
+      </Button>
+      <Button
+        variant="contained"
+        color="error"
+        onClick={() => openConfirmationModal(row.id)}
+      >
+        Delete
+      </Button>
+    </>
+  );
+
   return (
     <Container>
       <Breadcrumbs />
@@ -87,59 +116,9 @@ const BookListPage: React.FC = () => {
             </MenuItem>
           ))}
         </Select>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => setFilterAuthorId(filterAuthorId)}
-          style={{ marginTop: '0.5rem' }}
-        >
-          Apply
-        </Button>
       </FormControl>
 
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell>ID</TableCell>
-            <TableCell>Title</TableCell>
-            <TableCell>Author(s)</TableCell>
-            <TableCell>Publication Year</TableCell>
-            <TableCell>Actions</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {filteredBooks.map(book => (
-            <TableRow key={book.id}>
-              <TableCell>{book.id}</TableCell>
-              <TableCell>{book.title}</TableCell>
-              <TableCell>
-                {book.authorIds.map(id => {
-                  const author = authors.find(a => a.id === id);
-                  return author ? author.fullName : 'Unknown Author';
-                }).join(', ')}
-              </TableCell>
-              <TableCell>{book.publicationYear}</TableCell>
-              <TableCell>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  component={Link}
-                  to={`/Books/Edit/${book.id}`}
-                >
-                  Edit
-                </Button>
-                <Button
-                  variant="contained"
-                  color="error"
-                  onClick={() => openConfirmationModal(book.id)}
-                >
-                  Delete
-                </Button>
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+      <Table columns={columns} data={filteredBooks} actions={actions} />
 
       <ConfirmationModal
         isOpen={isModalOpen}
