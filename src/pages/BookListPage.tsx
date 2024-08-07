@@ -34,7 +34,7 @@ const BookListPage: React.FC = () => {
   }, [books, filterAuthorId]);
 
   const handleFilterChange = (event: SelectChangeEvent) => {
-    setTempFilterAuthorId(event.target.value);
+    setTempFilterAuthorId(event.target.value || null);
   };
 
   const applyFilter = () => {
@@ -73,13 +73,13 @@ const BookListPage: React.FC = () => {
   ];
 
   const actions = (row: any) => (
-    <Box sx={{display: 'flex'}}>
+    <Box sx={{ display: 'flex' }}>
       <Button
         variant="contained"
         color="primary"
         component={Link}
         to={`/Books/Edit/${row.id}`}
-        sx={{marginRight: '16px'}}
+        sx={{ marginRight: '16px' }}
       >
         Edit
       </Button>
@@ -100,26 +100,20 @@ const BookListPage: React.FC = () => {
         color="primary"
         component={Link}
         to="Books/Add"
-        sx={{ marginBottom: '16px' }}
+        sx={{ marginBottom: '32px' }}
       >
         Add Book
       </Button>
 
-      <Box sx={{display: 'flex'}}>
-        <FormControl
-          variant="outlined"
-          sx={{
-            minWidth: '200px',
-            marginRight: '16px'
-          }}
-        >
+      <Box sx={{ display: 'flex', alignItems: 'center', marginBottom: '16px' }}>
+        <FormControl variant="outlined" sx={{ minWidth: '200px', marginRight: '16px' }}>
           <InputLabel>Filter by Author</InputLabel>
           <Select
             value={tempFilterAuthorId || ''}
             onChange={handleFilterChange}
             label="Filter by Author"
           >
-            <MenuItem value=""><em>All</em></MenuItem>
+            <MenuItem value=""><em>None</em></MenuItem>
             {authors.map(author => (
               <MenuItem key={author.id} value={author.id}>
                 {author.fullName}
@@ -131,7 +125,6 @@ const BookListPage: React.FC = () => {
           variant="contained"
           color="primary"
           onClick={applyFilter}
-          sx={{ marginBottom: '16px' }}
         >
           Apply
         </Button>

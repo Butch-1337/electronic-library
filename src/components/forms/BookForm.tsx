@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {useForm, Controller, SubmitHandler, Resolver} from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -6,10 +6,10 @@ import {
   TextField,
   Button,
   FormControl,
-  FormHelperText,
   Autocomplete,
   CircularProgress,
-  InputAdornment, Box,
+  InputAdornment,
+  Box,
 } from '@mui/material';
 import { Author } from '../../hooks/useAuthors';
 import CancelButton from '../CancelButton'
@@ -21,6 +21,8 @@ interface FormData {
   authorIds: string[];
 }
 
+const maxYear = new Date().getFullYear()
+
 // Define the schema for validation
 const schema = yup.object().shape({
   title: yup.string().required('Title is required'),
@@ -29,6 +31,8 @@ const schema = yup.object().shape({
     .typeError('Publication Year must be a number')
     .positive('Publication Year must be a positive number')
     .integer('Publication Year must be an integer')
+    .min(0)
+    .max(maxYear)
     .required('Publication Year is required'),
   authorIds: yup.array()
     .of(yup.string().required('Each author must be selected'))
@@ -46,7 +50,8 @@ const BookForm: React.FC<BookFormProps> = ({ onSubmit, defaultValues, authors })
   const {
     control,
     handleSubmit,
-    formState: { errors, touchedFields, isValid, isDirty },
+    formState,
+    trigger,
   } = useForm<FormData>({
     defaultValues: defaultValues || {
       title: '',
@@ -58,6 +63,8 @@ const BookForm: React.FC<BookFormProps> = ({ onSubmit, defaultValues, authors })
     shouldFocusError: true,
     reValidateMode: 'onChange',
   });
+
+  const { errors, touchedFields, isValid, isDirty } = formState
 
   const handleFormSubmit: SubmitHandler<FormData> = (data) => {
     onSubmit(data);
@@ -98,6 +105,7 @@ const BookForm: React.FC<BookFormProps> = ({ onSubmit, defaultValues, authors })
                   inputProps: {
                     step: 1,
                     min: 0,
+                    max: maxYear
                   },
                 }}
               />
@@ -117,12 +125,18 @@ const BookForm: React.FC<BookFormProps> = ({ onSubmit, defaultValues, authors })
                 options={authors}
                 getOptionLabel={(option) => option.fullName}
                 value={authors.filter(author => field.value.includes(author.id))}
-                onChange={(_, value) => field.onChange(value.map((author: Author) => author.id))}
+                onChange={(_, value) => {
+                  field.onChange(value.map((author: Author) => author.id))
+                  trigger('authorIds') //trigger validation on change
+                }}
+                onBlur={() => {
+                  trigger('authorIds') // trigger validation on blur
+                }}
                 renderInput={(params) => (
                   <TextField
                     {...params}
                     label="Authors"
-                    error={!!(errors.authorIds && touchedFields.authorIds)}
+                    error={!!(errors.authorIds)}
                     helperText={errors.authorIds?.message as string}
                     InputProps={{
                       ...params.InputProps,
@@ -143,7 +157,6 @@ const BookForm: React.FC<BookFormProps> = ({ onSubmit, defaultValues, authors })
               />
             )}
           />
-          {errors.authorIds && <FormHelperText error>{errors.authorIds?.message as string}</FormHelperText>}
         </FormControl>
       </div>
 
