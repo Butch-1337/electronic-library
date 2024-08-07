@@ -6,6 +6,7 @@ import BookForm from '../components/BookForm';
 import BackButton from '../components/BackButton';
 import { v4 as uuidv4 } from 'uuid';
 import Breadcrumbs from '../components/Breadcrumbs'
+import {Typography} from '@mui/material'
 
 const AddEditBookPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -20,14 +21,15 @@ const AddEditBookPage: React.FC = () => {
     } else {
       addBook({ ...data, id: uuidv4() });
     }
-    history.push('/books');
+    history.push('/Books');
   };
 
   return (
     <div>
       <Breadcrumbs />
-      <BackButton />
-      <h1>{book ? "Edit Book" : "Add Book"}</h1>
+      <Typography variant="h4" gutterBottom>
+        {book ? "Edit Book" : "Add Book"}
+      </Typography>
       <BookForm onSubmit={handleSubmit} defaultValues={book} authors={authors} />
     </div>
   );

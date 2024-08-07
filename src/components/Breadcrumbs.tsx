@@ -1,35 +1,31 @@
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Breadcrumbs as MUIBreadcrumbs, Link, Typography } from '@mui/material';
+import { Link as RouterLink, useLocation } from 'react-router-dom';
 
 const Breadcrumbs: React.FC = () => {
   const location = useLocation();
   const pathnames = location.pathname.split('/').filter(x => x);
 
   return (
-    <nav aria-label="Breadcrumb">
-      <ol style={{ display: 'flex', listStyle: 'none', padding: 0 }}>
-        <li>
-          <Link to="/">Home</Link>
-        </li>
-        {pathnames.map((value, index) => {
-          const to = `/${pathnames.slice(0, index + 1).join('/')}`;
-          const isLast = index === pathnames.length - 1;
+    <MUIBreadcrumbs aria-label="breadcrumb">
+      <Link component={RouterLink} color="inherit" to="/">
+        Home
+      </Link>
+      {pathnames.map((value, index) => {
+        const last = index === pathnames.length - 1;
+        const to = `/${pathnames.slice(0, index + 1).join('/')}`;
 
-          return (
-            <li key={to} style={{ margin: '0 8px' }}>
-              {isLast ? (
-                <span>{value}</span>
-              ) : (
-                <>
-                  <Link to={to}>{value}</Link>
-                  <span> / </span>
-                </>
-              )}
-            </li>
-          );
-        })}
-      </ol>
-    </nav>
+        return last ? (
+          <Typography color="textPrimary" key={to}>
+            {value}
+          </Typography>
+        ) : (
+          <Link component={RouterLink} color="inherit" to={to} key={to}>
+            {value}
+          </Link>
+        );
+      })}
+    </MUIBreadcrumbs>
   );
 };
 

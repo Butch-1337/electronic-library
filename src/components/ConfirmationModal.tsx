@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './ConfirmationModal.css';
+import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button } from '@mui/material';
 
 interface ConfirmationModalProps {
   isOpen: boolean;
@@ -13,16 +13,20 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({ isOpen, message, 
   if (!isOpen) return null;
 
   return ReactDOM.createPortal(
-    <div className="modal-overlay">
-      <div className="modal-content">
-        <h2>Confirm Action</h2>
-        <p>{message}</p>
-        <div className="modal-buttons">
-          <button onClick={onConfirm}>Yes</button>
-          <button onClick={onCancel}>No</button>
-        </div>
-      </div>
-    </div>,
+    <Dialog open={isOpen} onClose={onCancel}>
+      <DialogTitle>Confirm Action</DialogTitle>
+      <DialogContent>
+        <DialogContentText>{message}</DialogContentText>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={onConfirm} color="primary">
+          Yes
+        </Button>
+        <Button onClick={onCancel} color="secondary">
+          No
+        </Button>
+      </DialogActions>
+    </Dialog>,
     document.body
   );
 };

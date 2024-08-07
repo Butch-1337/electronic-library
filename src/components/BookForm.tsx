@@ -3,6 +3,7 @@ import { useForm, Controller } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Author } from '../hooks/useAuthors';
+import { TextField, Button, FormControl, Autocomplete } from '@mui/material';
 
 interface BookFormProps {
   onSubmit: (data: any) => void;
@@ -28,59 +29,62 @@ const BookForm: React.FC<BookFormProps> = ({ onSubmit, defaultValues, authors })
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <div>
-        <label>Title</label>
+      <FormControl fullWidth margin="normal">
         <Controller
           name="title"
           control={control}
-          render={({ field }) => <input {...field} />}
+          render={({ field }) => (
+            <TextField
+              {...field}
+              label="Title"
+              error={!!errors.title}
+              helperText={errors.title?.message as string}
+            />
+          )}
         />
-        {errors.title && <p>{errors.title?.message as string}</p>}
-      </div>
+      </FormControl>
 
-      <div>
-        <label>Publication Year</label>
+      <FormControl fullWidth margin="normal">
         <Controller
           name="publicationYear"
           control={control}
-          render={({ field }) => <input {...field} />}
+          render={({ field }) => (
+            <TextField
+              {...field}
+              label="Publication Year"
+              error={!!errors.publicationYear}
+              helperText={errors.publicationYear?.message as string}
+            />
+          )}
         />
-        {errors.publicationYear && <p>{errors.publicationYear?.message as string}</p>}
-      </div>
+      </FormControl>
 
-      <div>
-        <label>Authors</label>
+      <FormControl fullWidth margin="normal">
         <Controller
           name="authorIds"
           control={control}
           render={({ field }) => (
-            <select
+            <Autocomplete
               multiple
-              {...field}
-              value={field.value || []}
-              onChange={(e) => {
-                const options = e.target.options;
-                const value: string[] = [];
-                for (let i = 0; i < options.length; i++) {
-                  if (options[i].selected) {
-                    value.push(options[i].value);
-                  }
-                }
-                field.onChange(value);
-              }}
-            >
-              {authors.map(author => (
-                <option key={author.id} value={author.id}>
-                  {author.fullName}
-                </option>
-              ))}
-            </select>
+              options={authors}
+              getOptionLabel={(option) => option.fullName}
+              onChange={(_, value) => field.onChange(value.map((author: Author) => author.id))}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Authors"
+                  error={!!errors.authorIds}
+                  helperText={errors.authorIds?.message as string}
+                />
+              )}
+            />
           )}
         />
-        {errors.authorIds && <p>{errors.authorIds?.message as string}</p>}
-      </div>
+      </FormControl>
 
-      <button type="submit">Save</button>
+      <Button variant="contained" color="primary" type="submit">
+        Save
+      </Button>
     </form>
   );
 };

@@ -5,6 +5,7 @@ import AuthorForm from '../components/AuthorForm';
 import BackButton from '../components/BackButton';
 import { v4 as uuidv4 } from 'uuid';
 import Breadcrumbs from '../components/Breadcrumbs'
+import {Typography} from '@mui/material'
 
 const AddEditAuthorPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -18,14 +19,16 @@ const AddEditAuthorPage: React.FC = () => {
     } else {
       addAuthor({ ...data, id: uuidv4() });
     }
-    history.push('/authors');
+    history.push('/Authors');
   };
 
   return (
     <div>
       <Breadcrumbs />
-      <BackButton />
-      <h1>{author ? "Edit Author" : "Add Author"}</h1>
+      <Typography variant="h4" gutterBottom>
+        {author ? "Edit Author" : "Add Author"}
+      </Typography>
+
       <AuthorForm onSubmit={handleSubmit} defaultValues={author} />
     </div>
   );

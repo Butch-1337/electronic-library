@@ -1,7 +1,8 @@
 import React from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import { TextField, Button, FormControl } from '@mui/material';
 
 interface AuthorFormProps {
   onSubmit: (data: any) => void;
@@ -13,19 +14,33 @@ const schema = yup.object().shape({
 });
 
 const AuthorForm: React.FC<AuthorFormProps> = ({ onSubmit, defaultValues }) => {
-  const { register, handleSubmit, formState: { errors } } = useForm({
-    defaultValues,
+  const { control, handleSubmit, formState: { errors } } = useForm({
+    defaultValues: {
+      fullName: defaultValues?.fullName || '',
+    },
     resolver: yupResolver(schema),
   });
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <div>
-        <label>Full Name</label>
-        <input {...register("fullName")} />
-        <p>{errors.fullName?.message as string}</p>
-      </div>
-      <button type="submit">Save</button>
+      <FormControl fullWidth margin="normal">
+        <Controller
+          name="fullName"
+          control={control}
+          render={({ field }) => (
+            <TextField
+              {...field}
+              label="Full Name"
+              error={!!errors.fullName}
+              helperText={errors.fullName?.message as string}
+            />
+          )}
+        />
+      </FormControl>
+
+      <Button variant="contained" color="primary" type="submit">
+        Save
+      </Button>
     </form>
   );
 };

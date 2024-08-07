@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import useAuthors from '../hooks/useAuthors';
 import useBooks from '../hooks/useBooks';
-import BackButton from '../components/BackButton';
+import {Button, Table, TableBody, TableCell, TableHead, TableRow, Typography} from '@mui/material';
 import ConfirmationModal from '../components/ConfirmationModal';
 import Breadcrumbs from '../components/Breadcrumbs'
 
@@ -39,33 +39,44 @@ const AuthorListPage: React.FC = () => {
   return (
     <div>
       <Breadcrumbs />
-      <BackButton />
-      <h1>Author List</h1>
-      <Link to="authors/add">Add Author</Link>
+      <Typography variant="h4" gutterBottom>
+        Author List
+      </Typography>
 
-      <table>
-        <thead>
-        <tr>
-          <th>ID</th>
-          <th>Full Name</th>
-          <th>Number of Books</th>
-          <th>Actions</th>
-        </tr>
-        </thead>
-        <tbody>
-        {authors.map(author => (
-          <tr key={author.id}>
-            <td>{author.id}</td>
-            <td>{author.fullName}</td>
-            <td>{getNumberOfBooks(author.id)}</td>
-            <td>
-              <Link to={`/edit-author/${author.id}`}>Edit</Link>
-              <button onClick={() => openConfirmationModal(author.id)}>Delete</button>
-            </td>
-          </tr>
-        ))}
-        </tbody>
-      </table>
+      <div>
+        <Button
+          variant="contained"
+          color="primary"
+          component={Link}
+          to="Authors/add"
+        >
+          Add Author
+        </Button>
+      </div>
+
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableCell>ID</TableCell>
+            <TableCell>Full Name</TableCell>
+            <TableCell>Number of Books</TableCell>
+            <TableCell>Actions</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {authors.map(author => (
+            <TableRow key={author.id}>
+              <TableCell>{author.id}</TableCell>
+              <TableCell>{author.fullName}</TableCell>
+              <TableCell>{getNumberOfBooks(author.id)}</TableCell>
+              <TableCell>
+                <Button variant="contained" color="primary" component={Link} to={`/Authors/${author.id}/edit`}>Edit</Button>
+                <Button variant="contained" color="error" onClick={() => openConfirmationModal(author.id)}>Delete</Button>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
 
       <ConfirmationModal
         isOpen={isModalOpen}
