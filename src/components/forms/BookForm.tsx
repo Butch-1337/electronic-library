@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {useForm, Controller, SubmitHandler, Resolver} from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -7,8 +7,6 @@ import {
   Button,
   FormControl,
   Autocomplete,
-  CircularProgress,
-  InputAdornment,
   Box,
 } from '@mui/material';
 import { Author } from '../../hooks/useAuthors';
