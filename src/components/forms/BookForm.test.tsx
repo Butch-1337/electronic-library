@@ -1,14 +1,9 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import BookForm from './BookForm';
-import { Author } from '../../hooks/useAuthors';
 import '@testing-library/jest-dom/extend-expect';
+import {mockAuthors} from '../../__mocks__/mocks'
 
-// Mock data for authors
-const mockAuthors: Author[] = [
-  { id: '1', fullName: 'Author One' },
-  { id: '2', fullName: 'Author Two' },
-];
 
 // Mock function for onSubmit
 const mockOnSubmit = jest.fn();
@@ -60,8 +55,8 @@ describe('BookForm', () => {
 
     // Select an author
     const authorsAutocomplete = screen.getByLabelText(/Authors/i);
-    fireEvent.change(authorsAutocomplete, { target: { value: 'Author One' } });
-    fireEvent.click(screen.getByText('Author One'));
+    fireEvent.change(authorsAutocomplete, { target: { value: 'Author 1' } });
+    fireEvent.click(screen.getByText('Author 1'));
 
     // Submit the form
     fireEvent.submit(screen.getByRole('button', { name: /Save/i }));
